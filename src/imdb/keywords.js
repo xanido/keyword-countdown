@@ -1,0 +1,22 @@
+import fetchJsonp from "fetch-jsonp"
+import "../cache"
+
+const xorigin = (url) => `http://www.whateverorigin.org/get?url=${encodeURIComponent(url)}`
+
+const keywords = (function keywords(imdbID) {
+    return fetchJsonp(xorigin(`https://www.imdb.com/title/${imdbID}/keywords`))
+        .then(response => response.json())
+        .then(html => {
+            let m = ''
+            const re = /<div class="sodatext">\s*<a href=".*?"\s*>(.*?)<\/a>/g
+            const keywords = []
+
+            while (m = re.exec(html.contents)) {
+                keywords.push(m[1])
+            }
+
+            return keywords
+        })
+}).memoize()
+
+export default keywords
