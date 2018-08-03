@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "express": "^4.16.3",
     "fetch-jsonp": "^1.1.3",
-    "http-proxy-middleware": "^0.18.0",
     "imdb-api": "^4.0.0",
     "omdb": "^0.8.0",
     "omdb-client": "^2.0.0",
@@ -17,16 +15,26 @@
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "concurrently": "^3.6.1",
+    "dotenv-webpack": "^1.5.7",
+    "express": "^4.16.3",
+    "http-proxy-middleware": "^0.18.0",
+    "node-sass": "^4.9.2",
+    "sass-loader": "^7.1.0",
+    "sass-resources-loader": "^1.3.3",
+    "style-loader": "^0.21.0",
     "webpack": "^4.16.3",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.5"
+    "webpack-dev-server": "^3.1.5",
+    "css-loader": "^1.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "concurrently --kill-others \"npm start\" \"npx webpack-dev-server\""
+    "serve": "concurrently --kill-others \"npx webpack-dev-server\" \"npm start\""
   },
   "keywords": [],
   "author": "",
