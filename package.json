@@ -8,6 +8,7 @@
     "bootstrap": "^4.1.3",
     "fetch-jsonp": "^1.1.3",
     "imdb-api": "^4.0.0",
+    "lz-string": "^1.4.4",
     "omdb": "^0.8.0",
     "omdb-client": "^2.0.0",
     "react": "^16.4.1",

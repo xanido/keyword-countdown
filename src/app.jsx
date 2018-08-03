@@ -2,6 +2,7 @@ import React from "react";
 import TitleSearch from "./components/titlesearch";
 import Title from "./components/title";
 import "./util/array.unique"
+import { saveState } from "./state/storage"
 
 class KCApp extends React.Component {
     state = {
@@ -51,7 +52,7 @@ class KCApp extends React.Component {
     }
 
     persistState = () => {
-        // stub
+        saveState(this.state)
     }
 
 }
