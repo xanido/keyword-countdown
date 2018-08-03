@@ -2,7 +2,7 @@ import React    from "react"
 import omdb     from "../omdb"
 import imdb     from "../imdb"
 import LZString from "lz-string"
-import styles from "./keyword.scss"
+import Keyword from "./keyword"
 
 class Title extends React.Component {
 
@@ -37,10 +37,12 @@ class Title extends React.Component {
                             <img src={this.state.imdb.Poster}/>
                             <div className="row">
                                 {this.state.keywords.map(keyword => (
-                                    <React.Fragment>
-                                        <div className={["col-sm-4", styles.keyword, this.props.selectedKeywords.indexOf(keyword) >= 0 ? styles.selected : ''].join(" ")}
-                                             onClick={this.handleKeywordClick}>{keyword}</div>
-                                    </React.Fragment>
+                                    <Keyword
+                                        selected={this.props.selectedKeywords.indexOf(keyword) !== -1}
+                                        onClick={this.handleKeywordClick}
+                                    >
+                                        {keyword}
+                                    </Keyword>
                                 ))}
                             </div>
                         </React.Fragment>
