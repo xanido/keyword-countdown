@@ -1,5 +1,3 @@
-Array.prototype.unique = function() {
-    return this.filter(function (value, index, self) {
-        return self.indexOf(value) === index;
-    });
-}
+Array.prototype.unique = function unique() {
+  return this.filter((value, index, self) => self.indexOf(value) === index);
+};

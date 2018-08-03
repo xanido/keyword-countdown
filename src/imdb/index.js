@@ -1,3 +1,3 @@
-import keywords from "./keywords"
+import keywords from './keywords';
 
-export default { keywords }
+export default { keywords };

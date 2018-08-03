@@ -1,46 +1,43 @@
-import React from "react"
-import omdb from "../omdb"
-import {AsyncTypeahead} from "react-bootstrap-typeahead"
+import React from 'react';
+import { AsyncTypeahead } from 'react-bootstrap-typeahead';
+import omdb from '../omdb';
 
 // stub
 class TitleSearch extends React.Component {
-    state = {
-        allowNew: false,
-        isLoading: false,
-        multiple: false,
-        options: [],
-    };
+  state = {
+    allowNew: false,
+    isLoading: false,
+    multiple: false,
+    options: [],
+  };
 
-    render() {
-        return (
-            <React.Fragment>
-                <AsyncTypeahead
-                    {...this.state}
-                    minLength={3}
-                    onSearch={this._handleSearch}
-                    placeholder="Search for a movie..."
-                    selectHintOnEnter={true}
-                    {...this.props}
-                />
-            </React.Fragment>
-        );
-    }
+  handleSearch = (query) => {
+    this.setState({ isLoading: true });
+    omdb
+      .search({ query })
+      .then(({ Search: results }) => {
+        this.setState({
+          isLoading: false,
+          options: results.map(result => ({
+            label: result.Title,
+            id: result.imdbID,
+          })),
+        });
+      });
+  }
 
-    _handleChange = (e) => {
-        const {checked, name} = e.target;
-        this.setState({[name]: checked});
-    }
-
-    _handleSearch = (query) => {
-        this.setState({isLoading: true});
-        omdb.search({query})
-            .then(({Search}) => {
-                this.setState({
-                    isLoading: false,
-                    options: Search.map(result => ({label: result.Title, id: result.imdbID})),
-                });
-            });
-    }
+  render() {
+    return (
+      <AsyncTypeahead
+        {...this.state}
+        minLength={3}
+        onSearch={this.handleSearch}
+        placeholder="Search for a movie..."
+        selectHintOnEnter
+        {...this.props}
+      />
+    );
+  }
 }
 
-export default TitleSearch
+export default TitleSearch;
