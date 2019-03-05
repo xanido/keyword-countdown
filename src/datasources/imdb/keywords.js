@@ -1,5 +1,5 @@
 import fetchJsonp from 'fetch-jsonp';
-import memoize    from '../../cache/index';
+import memoize from '../../cache/index';
 
 const xorigin = url => `http://www.whateverorigin.org/get?url=${encodeURIComponent(url)}`;
 

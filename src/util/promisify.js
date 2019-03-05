@@ -1,3 +1,4 @@
+// assumes that the second parameter is the callback fn
 const promisify = func => (
   params => (
     new Promise((resolve, reject) => {

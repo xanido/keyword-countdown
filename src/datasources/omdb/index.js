@@ -1,4 +1,4 @@
-import omdb      from 'omdb-client';
+import omdb from 'omdb-client';
 import promisify from '../../util/promisify';
 
 let apiKey;

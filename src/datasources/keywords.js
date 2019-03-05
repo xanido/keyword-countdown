@@ -1,11 +1,8 @@
-import { keywords as imdbKeywords } from './imdb';
-import { keywords as tmdbKeywords } from './tmdb';
-
 import imdb from './imdb';
 import tmdb from './tmdb';
 import omdb from './omdb';
 
-let source = 'imdb';
+const defaultBackend = 'omdb';
 
 const backends = {
   imdb,
@@ -13,13 +10,15 @@ const backends = {
   omdb,
 };
 
+const endpointBackends = {};
+
 const callBackend = (endpoint, ...args) => {
-  const backendSpecified = endpointBackends.hasOwnProperty(endpoint);
-  const backendName = backendSpecified ? endpointBackends[endpoint] : 'imdb';
+  const backendSpecified = Object.hasOwnProperty.call(endpointBackends, endpoint);
+  const backendName = backendSpecified ? endpointBackends[endpoint] : defaultBackend;
   const backend = backends[backendName];
 
-  if(typeof backend[endpoint] !== 'function') {
-    throw Error("Backend " + backend + " does not support " + endpoint);
+  if (typeof backend[endpoint] !== 'function') {
+    throw Error(`Backend ${backend} does not support ${endpoint}`);
   }
 
   return backend[endpoint].apply(null, args);
@@ -31,8 +30,7 @@ const api = {
   searchTitles: terms => callBackend('search', terms),
 };
 
-const endpointBackends = {};
-Object.keys(api).map(endpoint => endpointBackends[endpoint] = imdb);
+Object.keys(api).map((endpoint) => { endpointBackends[endpoint] = imdb; return imdb; });
 
 const setEndpointBackend = (endpoint, backend) => {
   endpointBackends[endpoint] = backend;
@@ -41,4 +39,4 @@ const setEndpointBackend = (endpoint, backend) => {
 export default {
   setEndpointBackend,
   api,
-}
+};

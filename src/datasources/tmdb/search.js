@@ -1,4 +1,4 @@
-import Tmdb    from 'moviedb-promise';
+import Tmdb from 'moviedb-promise';
 import memoize from '../../cache/index';
 
 const apiKey = process.env.TMDB_API_KEY;
