@@ -1,11 +1,16 @@
 import React         from 'react';
 import PropTypes     from 'prop-types';
+import AppHeader     from "./components/appheader";
 import TitleSearch   from './components/titlesearch';
+import TitleWell     from './components/titlewell';
 import Title         from './components/title';
+import TitleEdit     from './components/titleedit';
 import './util/array.unique';
 import { saveState } from './state/storage';
 import Description   from "./components/description"
-import styles from "./app.scss"
+import styles        from "./app.scss"
+import {MemoryRouter as Router} from "react-router";
+import {Route, Switch, BrowserRouter}       from "react-router-dom"
 
 class KCApp extends React.Component {
   constructor(props) {
@@ -67,21 +72,39 @@ class KCApp extends React.Component {
   render() {
     const { titles, keywordsByTitle, description } = this.state;
     return (
-      <div>
-        <TitleSearch onChange={this.onChange} />
-        <div className={styles.titles}>
-          {titles.map(title => (
-            <Title
-              key={title.id}
-              title={title.label}
-              onKeywordClick={keyword => this.handleKeywordClick(title, keyword)}
-              onKeywordSort={keywords => this.handleKeywordSort(title, keywords)}
-              selectedKeywords={keywordsByTitle[title.id] || []}
-            />
-          ))}
-        </div>
-        <Description value={description} onChange={this.handleDescriptionChange} />
-      </div>
+      <Router>
+        <Route
+          path={["/edit/:id", "/"]}
+          render={props => (
+            <div>
+              <AppHeader />
+              <TitleWell
+                {...{ titles, keywordsByTitle }}
+                onKeywordClick={this.handleKeywordClick}
+                onKeywordSort={this.handleKeywordSort}
+              />
+              <TitleSearch onChange={this.onChange} />
+              <Description value={description} onChange={this.handleDescriptionChange} />
+              <Switch>
+                <Route
+                  path={"/edit/:id"}
+                  render={props => {
+                    const title = titles.filter(title => title.id === props.match.params.id)[0];
+                    if(!title) return null;
+                    return <TitleEdit
+                      title={title}
+                      onKeywordClick={this.handleKeywordClick}
+                      onKeywordSort={this.handleKeywordSort}
+                      selectedKeywords={keywordsByTitle[props.match.params.id]}
+                    />
+                  }}
+                />
+              </Switch>
+            </div>
+          )}
+        />
+
+      </Router>
     );
   }
 }

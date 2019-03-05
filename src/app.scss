@@ -1,6 +1,3 @@
-:local {
-  .titles {
-    display: flex;
-    align-items: top;
-  }
+body {
+  padding-top: $appHeaderHeight;
 }

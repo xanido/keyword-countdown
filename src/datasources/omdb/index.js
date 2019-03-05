@@ -1,5 +1,6 @@
 import omdb from 'omdb-client';
 import promisify from '../../util/promisify';
+import memoize from "../../cache"
 
 let apiKey;
 

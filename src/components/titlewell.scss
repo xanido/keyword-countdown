@@ -1,0 +1,10 @@
+:local {
+  .titleWell {
+    display: flex;
+    align-items: top;
+    background: #eee;
+    padding: 50px;
+    overflow: scroll;
+    scroll-behavior: smooth;
+  }
+}

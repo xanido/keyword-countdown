@@ -9,14 +9,13 @@ import Poster           from './poster';
 import log              from '../util/log';
 import styles           from './title.scss';
 import SortableKeywords from "./sortablekeywords"
+import classNames from "classnames";
 
 class Title extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       imdb: {},
-      keywords: [],
-      expanded: false,
     };
   }
 
@@ -31,20 +30,6 @@ class Title extends React.Component {
     }
   }
 
-  handleTitleClick = () => {
-    const { expanded } = this.state;
-    this.setState({ expanded: !expanded });
-  }
-
-  handleKeywordClick = (event) => {
-    const { onKeywordClick } = this.props;
-    onKeywordClick(event.target.childNodes[0].nodeValue);
-  }
-
-  handleKeywordSort = (keywords) => {
-    this.props.onKeywordSort(keywords);
-  }
-
   // shouldn't be here, should move up the chain
   fetchData() {
     const { title } = this.props;
@@ -52,39 +37,21 @@ class Title extends React.Component {
       .then((data) => {
         this.setState({ imdb: data });
         return data;
-      })
-      .then(data => moviedb.getKeywords(data.imdbID))
-      .then((keywords) => { log(keywords); return keywords; })
-      .then((keywords) => { this.setState({ keywords }); });
+      });
   }
 
   render() {
-    const { keywords, imdb: movieData, expanded } = this.state;
-    const { title, selectedKeywords } = this.props;
+    const { imdb: movieData } = this.state;
+
+    const classes = classNames([
+      styles.title,
+      { [styles.selected]: this.props.selected }
+    ]);
+
     if (movieData) {
       return (
-        <div className={styles.title}>
+        <div className={classes}>
           <Poster movieData={movieData} onClick={this.handleTitleClick} />
-          <SlideDown closed={!expanded}>
-            <div className={styles.titleDetails}>
-              <h1>
-                {title}
-              </h1>
-              <div className="row">
-                {keywords.map(keyword => (
-                  <Keyword
-                    key={keyword}
-                    selected={selectedKeywords.indexOf(keyword) !== -1}
-                    onClick={this.handleKeywordClick}
-                  >
-                    {keyword}
-                  </Keyword>
-                ))}
-              </div>
-            </div>
-          </SlideDown>
-          <SortableKeywords keywords={selectedKeywords} onSort={this.handleKeywordSort}/>
-
         </div>
       );
     }
@@ -94,13 +61,10 @@ class Title extends React.Component {
 
 Title.propTypes = {
   title: PropTypes.string.isRequired,
-  onKeywordClick: PropTypes.func,
-  selectedKeywords: PropTypes.arrayOf(PropTypes.string),
 };
 
 Title.defaultProps = {
-  onKeywordClick: () => {},
-  selectedKeywords: [],
+
 };
 
 export default Title;

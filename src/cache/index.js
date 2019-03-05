@@ -46,7 +46,7 @@ function memoized(...args) {
   if (Promise.resolve(value) === value) {
     value.then((data) => {
       store(key, JSON.stringify(data));
-      this.memoizedValues[key] = data;
+      this.memoizedValues[key] = JSON.stringify(data);
       return data;
     });
 

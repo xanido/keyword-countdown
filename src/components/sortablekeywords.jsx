@@ -61,7 +61,6 @@ class SortableKeywords extends Component {
 
   render() {
     const {keywords} = this.state;
-    console.log("rendering sortable list");
 
     return <SortableList items={keywords} onSortEnd={this.onSortEnd} onDelete={this.onDelete} useDragHandle />;
   }

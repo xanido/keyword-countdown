@@ -4,8 +4,16 @@
     display: inline-block;
     border-radius: 10px;
     overflow: hidden;
-
+    flex-shrink: 0;
     margin-right: 10px;
+  }
+
+  .titleDetails {
+  }
+
+  .selected {
+    box-shadow: 0 0 10px #328d99;
+    border: 1px solid #328d99;
   }
 
   .title:nth-of-type(1) .titleDetails {
