@@ -5,16 +5,16 @@ import ReactDOM     from 'react-dom';
 import React        from 'react';
 import log          from './util/log';
 import omdb         from './datasources/omdb';
-import moviedb      from './datasources/keywords';
+import moviedb      from './datasources';
 import { getState } from './state/storage';
 import isValid      from './state/schema';
 
 import KCApp from './app';
 
-omdb.setApiKey(process.env.OMDB_API_KEY);
 moviedb.setEndpointBackend("search", "omdb");
 moviedb.setEndpointBackend("title", "omdb");
-moviedb.setEndpointBackend("keywords", "tmdb");
+moviedb.setEndpointBackend("keywords", "imdb");
+moviedb.setBackendApiKey("omdb", process.env.OMDB_API_KEY);
 
 let initialState = {};
 try {

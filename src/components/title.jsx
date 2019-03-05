@@ -1,14 +1,14 @@
-import React                    from 'react';
-import PropTypes                from 'prop-types';
-import {SlideDown}              from "react-slidedown";
+import React            from 'react';
+import PropTypes        from 'prop-types';
+import {SlideDown}      from "react-slidedown";
 import 'react-slidedown/lib/slidedown.css';
-import omdb                     from '../datasources/omdb';
-import moviedb from '../datasources/keywords';
-import Keyword                  from './keyword';
-import Poster                   from './poster';
-import log                      from '../util/log';
-import styles                   from './title.scss';
-import SortableKeywords         from "./sortablekeywords"
+import omdb             from '../datasources/omdb';
+import moviedb          from '../datasources';
+import Keyword          from './keyword';
+import Poster           from './poster';
+import log              from '../util/log';
+import styles           from './title.scss';
+import SortableKeywords from "./sortablekeywords"
 
 class Title extends React.Component {
   constructor(props) {
@@ -48,12 +48,12 @@ class Title extends React.Component {
   // shouldn't be here, should move up the chain
   fetchData() {
     const { title } = this.props;
-    moviedb.api.getTitle({ title })
+    moviedb.getTitle({ title })
       .then((data) => {
         this.setState({ imdb: data });
         return data;
       })
-      .then(data => moviedb.api.getKeywords(data.imdbID))
+      .then(data => moviedb.getKeywords(data.imdbID))
       .then((keywords) => { log(keywords); return keywords; })
       .then((keywords) => { this.setState({ keywords }); });
   }

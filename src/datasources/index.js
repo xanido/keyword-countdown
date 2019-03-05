@@ -12,10 +12,15 @@ const backends = {
 
 const endpointBackends = {};
 
-const callBackend = (endpoint, ...args) => {
+const getBackend = (endpoint) => {
   const backendSpecified = Object.hasOwnProperty.call(endpointBackends, endpoint);
   const backendName = backendSpecified ? endpointBackends[endpoint] : defaultBackend;
-  const backend = backends[backendName];
+
+  return backends[backendName];
+};
+
+const callBackend = (endpoint, ...args) => {
+  const backend = getBackend(endpoint);
 
   if (typeof backend[endpoint] !== 'function') {
     throw Error(`Backend ${backend} does not support ${endpoint}`);
@@ -28,6 +33,7 @@ const api = {
   getKeywords: id => callBackend('keywords', id),
   getTitle: id => callBackend('title', id),
   searchTitles: terms => callBackend('search', terms),
+  setBackendApiKey: (backend, key) => { backends[backend].setApiKey(key); }
 };
 
 Object.keys(api).map((endpoint) => { endpointBackends[endpoint] = imdb; return imdb; });
@@ -38,5 +44,8 @@ const setEndpointBackend = (endpoint, backend) => {
 
 export default {
   setEndpointBackend,
-  api,
+  getKeywords: api.getKeywords,
+  getTitle: api.getTitle,
+  searchTitles: api.searchTitles,
+  setBackendApiKey: api.setBackendApiKey,
 };
