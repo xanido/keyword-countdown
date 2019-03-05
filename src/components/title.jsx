@@ -1,9 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import omdb from '../omdb';
-import imdb from '../imdb';
-import Keyword from './keyword';
-import log from '../util/log';
+import React                    from 'react';
+import PropTypes                from 'prop-types';
+import {SlideDown}              from "react-slidedown";
+import 'react-slidedown/lib/slidedown.css';
+import omdb                     from '../datasources/omdb';
+import moviedb from '../datasources/keywords';
+import Keyword                  from './keyword';
+import Poster                   from './poster';
+import log                      from '../util/log';
+import styles                   from './title.scss';
+import SortableKeywords         from "./sortablekeywords"
 
 class Title extends React.Component {
   constructor(props) {
@@ -36,15 +41,19 @@ class Title extends React.Component {
     onKeywordClick(event.target.childNodes[0].nodeValue);
   }
 
+  handleKeywordSort = (keywords) => {
+    this.props.onKeywordSort(keywords);
+  }
+
   // shouldn't be here, should move up the chain
   fetchData() {
     const { title } = this.props;
-    omdb.get({ title })
+    moviedb.api.getTitle({ title })
       .then((data) => {
         this.setState({ imdb: data });
         return data;
       })
-      .then(data => imdb.keywords(data.imdbID))
+      .then(data => moviedb.api.getKeywords(data.imdbID))
       .then((keywords) => { log(keywords); return keywords; })
       .then((keywords) => { this.setState({ keywords }); });
   }
@@ -54,16 +63,17 @@ class Title extends React.Component {
     const { title, selectedKeywords } = this.props;
     if (movieData) {
       return (
-        <React.Fragment>
-          <h1 onClick={this.handleTitleClick}>
-            {title}
-          </h1>
-          {expanded && (
-            <React.Fragment>
-              <img src={movieData.Poster} alt={title} />
+        <div className={styles.title}>
+          <Poster movieData={movieData} onClick={this.handleTitleClick} />
+          <SlideDown closed={!expanded}>
+            <div className={styles.titleDetails}>
+              <h1>
+                {title}
+              </h1>
               <div className="row">
                 {keywords.map(keyword => (
                   <Keyword
+                    key={keyword}
                     selected={selectedKeywords.indexOf(keyword) !== -1}
                     onClick={this.handleKeywordClick}
                   >
@@ -71,10 +81,11 @@ class Title extends React.Component {
                   </Keyword>
                 ))}
               </div>
-            </React.Fragment>
-          )
-          }
-        </React.Fragment>
+            </div>
+          </SlideDown>
+          <SortableKeywords keywords={selectedKeywords} onSort={this.handleKeywordSort}/>
+
+        </div>
       );
     }
     return null;

@@ -1,5 +1,5 @@
-import omdb from 'omdb-client';
-import promisify from '../util/promisify';
+import omdb      from 'omdb-client';
+import promisify from '../../util/promisify';
 
 let apiKey;
 
@@ -13,7 +13,7 @@ const injectapikey = fn => (
  * Expose the omdb API as a promise-based API
  */
 export default {
-  get: injectapikey(promisify(omdb.get)),
+  title: injectapikey(promisify(omdb.get)),
   search: injectapikey(promisify(omdb.search)),
   setApiKey: (newKey) => { apiKey = newKey; },
 };

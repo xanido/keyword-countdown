@@ -1,6 +1,7 @@
-import React from 'react';
+import React              from 'react';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
-import omdb from '../omdb';
+import omdb               from '../datasources/omdb';
+import TitleSearchItem    from "./titlesearchitem"
 
 // stub
 class TitleSearch extends React.Component {
@@ -21,6 +22,7 @@ class TitleSearch extends React.Component {
           options: results.map(result => ({
             label: result.Title,
             id: result.imdbID,
+            poster: result.Poster,
           })),
         });
       });
@@ -34,7 +36,15 @@ class TitleSearch extends React.Component {
         onSearch={this.handleSearch}
         placeholder="Search for a movie..."
         selectHintOnEnter
-        {...this.props}
+        renderMenuItemChildren={(option, props) => (
+          <TitleSearchItem key={option.id} title={option} />
+        )}
+        ref={ref => this._typeahead = ref}
+        onChange={options => {
+          this._typeahead.getInstance().clear();
+          this.props.onChange(options);
+        }}
+
       />
     );
   }

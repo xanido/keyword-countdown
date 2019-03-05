@@ -1,0 +1,26 @@
+:local {
+
+  .title {
+    display: inline-block;
+    border-radius: 10px;
+    overflow: hidden;
+
+    margin-right: 10px;
+  }
+
+  .title:nth-of-type(1) .titleDetails {
+    background: color("orange");
+  }
+  .title:nth-of-type(2) .titleDetails {
+    background: color("yellow");
+  }
+  .title:nth-of-type(3) .titleDetails {
+    background: color("green");
+  }
+  .title:nth-of-type(4) .titleDetails {
+    background: color("teal");
+  }
+  .title:nth-of-type(5) .titleDetails {
+    background: color("cyan");
+  }
+}

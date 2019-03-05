@@ -1,9 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import TitleSearch from './components/titlesearch';
-import Title from './components/title';
+import React         from 'react';
+import PropTypes     from 'prop-types';
+import TitleSearch   from './components/titlesearch';
+import Title         from './components/title';
 import './util/array.unique';
 import { saveState } from './state/storage';
+import Description   from "./components/description"
+import styles from "./app.scss"
 
 class KCApp extends React.Component {
   constructor(props) {
@@ -16,6 +18,7 @@ class KCApp extends React.Component {
   state = {
     titles: [],
     keywordsByTitle: {},
+    description: '',
   }
 
   onChange = (options) => {
@@ -44,22 +47,40 @@ class KCApp extends React.Component {
     });
   }
 
+  handleKeywordSort = (title, keywords) => {
+    const { keywordsByTitle } = this.state;
+    this.setState({
+      keywordsByTitle: { ...keywordsByTitle, [title.id]: keywords },
+    }, () => {
+      this.persistState();
+    });
+  }
+
+  handleDescriptionChange = (description) => {
+    this.setState({ description }, this.persistState);
+  }
+
   persistState = () => {
     saveState(this.state);
   }
 
   render() {
-    const { titles, keywordsByTitle } = this.state;
+    const { titles, keywordsByTitle, description } = this.state;
     return (
       <div>
         <TitleSearch onChange={this.onChange} />
-        {titles.map(title => (
-          <Title
-            title={title.label}
-            onKeywordClick={keyword => this.handleKeywordClick(title, keyword)}
-            selectedKeywords={keywordsByTitle[title.id] || []}
-          />
-        ))}
+        <div className={styles.titles}>
+          {titles.map(title => (
+            <Title
+              key={title.id}
+              title={title.label}
+              onKeywordClick={keyword => this.handleKeywordClick(title, keyword)}
+              onKeywordSort={keywords => this.handleKeywordSort(title, keywords)}
+              selectedKeywords={keywordsByTitle[title.id] || []}
+            />
+          ))}
+        </div>
+        <Description value={description} onChange={this.handleDescriptionChange} />
       </div>
     );
   }
@@ -67,8 +88,9 @@ class KCApp extends React.Component {
 
 KCApp.propTypes = {
   initialState: PropTypes.shape({
-    titles: PropTypes.arrayOf(PropTypes.string),
-    keywordsByTitle: PropTypes.objectOf(PropTypes.string),
+    titles: PropTypes.arrayOf(PropTypes.object),
+    keywordsByTitle: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)),
+    description: PropTypes.string,
   }),
 };
 
