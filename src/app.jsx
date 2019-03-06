@@ -24,6 +24,7 @@ class KCApp extends React.Component {
     titles: [],
     keywordsByTitle: {},
     description: '',
+    stateHash: '',
   }
 
   onChange = (options) => {
@@ -66,25 +67,29 @@ class KCApp extends React.Component {
   }
 
   persistState = () => {
-    saveState(this.state);
+    const { stateHash, ...state } = this.state;
+    this.setState({stateHash: saveState(state)});
   }
 
   render() {
-    const { titles, keywordsByTitle, description } = this.state;
+    const { titles, keywordsByTitle, description, stateHash } = this.state;
     return (
       <Router>
         <Route
           path={["/edit/:id", "/"]}
           render={props => (
             <div>
-              <AppHeader />
-              <TitleWell
-                {...{ titles, keywordsByTitle }}
-                onKeywordClick={this.handleKeywordClick}
-                onKeywordSort={this.handleKeywordSort}
-              />
-              <TitleSearch onChange={this.onChange} />
-              <Description value={description} onChange={this.handleDescriptionChange} />
+              <AppHeader stateHash={stateHash}/>
+              <div class="container-fluid">
+                <TitleWell
+                  {...{ titles, keywordsByTitle }}
+                  onKeywordClick={this.handleKeywordClick}
+                  onKeywordSort={this.handleKeywordSort}
+                />
+                <TitleSearch onChange={this.onChange} />
+                <Description value={description} onChange={this.handleDescriptionChange} />
+              </div>
+              <div className="container-fluid">
               <Switch>
                 <Route
                   path={"/edit/:id"}
@@ -92,6 +97,7 @@ class KCApp extends React.Component {
                     const title = titles.filter(title => title.id === props.match.params.id)[0];
                     if(!title) return null;
                     return <TitleEdit
+                      key={title.id}
                       title={title}
                       onKeywordClick={this.handleKeywordClick}
                       onKeywordSort={this.handleKeywordSort}
@@ -100,6 +106,7 @@ class KCApp extends React.Component {
                   }}
                 />
               </Switch>
+              </div>
             </div>
           )}
         />

@@ -52,6 +52,7 @@ class Title extends React.Component {
       return (
         <div className={classes}>
           <Poster movieData={movieData} onClick={this.handleTitleClick} />
+          <div className={styles.keywordCounter}>{this.props.selectedKeywords.length} / 10</div>
         </div>
       );
     }

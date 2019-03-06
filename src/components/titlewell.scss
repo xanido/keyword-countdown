@@ -1,10 +1,19 @@
+body.red {
+  :local {
+    .titleWell {
+      background: #f00;
+    }
+  }
+}
+
 :local {
   .titleWell {
     display: flex;
     align-items: top;
-    background: #eee;
+    background: #222;
     padding: 50px;
     overflow: scroll;
     scroll-behavior: smooth;
+    height: 40vh;
   }
 }

@@ -18,6 +18,7 @@ class TitleEdit extends React.Component {
       imdb: {},
       keywords: [],
       expanded: false,
+      filter: '',
     };
   }
 
@@ -45,6 +46,10 @@ class TitleEdit extends React.Component {
 
   handleKeywordSort = (keywords) => {
     this.props.onKeywordSort(this.props.title, keywords);
+  }
+
+  filterKeywords = (event) => {
+    this.setState({filter: event.target.value});
   }
 
   // shouldn't be here, should move up the chain
@@ -75,15 +80,17 @@ class TitleEdit extends React.Component {
               <SortableKeywords keywords={selectedKeywords} onSort={this.handleKeywordSort}/>
             </div>
             <div className="col-sm-8">
+                <input className={"form-control"} value={this.state.filter} type="text" onChange={this.filterKeywords} />
               <div className={"row"}>
               {keywords.map(keyword => (
-                <Keyword
+                (keyword.indexOf(this.state.filter) >= 0 || this.state.filter == '')
+                && (<Keyword
                   key={keyword}
                   selected={selectedKeywords.indexOf(keyword) !== -1}
                   onClick={this.handleKeywordClick}
                 >
                   {keyword}
-                </Keyword>
+                </Keyword>)
               ))}
               </div>
             </div>

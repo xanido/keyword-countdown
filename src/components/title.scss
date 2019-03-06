@@ -6,14 +6,40 @@
     overflow: hidden;
     flex-shrink: 0;
     margin-right: 10px;
+    height: 100%;
+    border: 1px solid transparent;
+    transition: all 0.2s ease-out;
+    position: relative;
+
+    img {
+      height: 100%;
+      transition: all 0.5s ease-out;
+    }
+  }
+
+  .title--obscured {
+    img {
+      filter: blur(100px);
+    }
   }
 
   .titleDetails {
   }
 
+  .keywordCounter {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: #328d99;
+    color: #fff;
+  }
+
   .selected {
     box-shadow: 0 0 10px #328d99;
     border: 1px solid #328d99;
+    img {
+      filter: none;
+    }
   }
 
   .title:nth-of-type(1) .titleDetails {

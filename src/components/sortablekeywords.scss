@@ -25,6 +25,10 @@
     font-weight: 400;
   }
 
+  .stylizedItem:nth-child(n+11) {
+    opacity: 0.5;
+  }
+
   // Drag handle
   .handle {
     display: block;

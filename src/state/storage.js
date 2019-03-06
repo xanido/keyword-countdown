@@ -20,6 +20,8 @@ const getState = () => {
 
 const saveState = (state) => {
   window.location.hash = LZString.compressToEncodedURIComponent(`v1::${JSON.stringify(state)}`);
+
+  return window.location.hash;
 };
 
 export { getState, saveState };
