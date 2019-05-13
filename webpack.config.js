@@ -45,6 +45,9 @@ module.exports = {
   performance: { hints: false },
   mode: process.env.NODE_ENV,
   plugins: [
-    new Dotenv(),
+    new Dotenv({
+      systemvars: process.env.CI,
+      safe: true,
+    }),
   ],
 };
