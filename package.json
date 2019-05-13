@@ -16,7 +16,7 @@
     "lz-string": "^1.4.4",
     "moviedb-promise": "^1.2.6",
     "omdb": "^0.8.0",
-    "omdb-client": "^2.0.0",
+    "omdb-client": "github:xanido/omdb-client",
     "prop-types": "^15.6.2",
     "react": "^16.8.4",
     "react-bootstrap-typeahead": "^3.2.0",
