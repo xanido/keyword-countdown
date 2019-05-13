@@ -33,7 +33,7 @@ const api = {
   getKeywords: id => callBackend('keywords', id),
   getTitle: id => callBackend('title', id),
   searchTitles: terms => callBackend('search', terms),
-  setBackendApiKey: (backend, key) => { backends[backend].setApiKey(key); }
+  setBackendApiKey: (backend, key) => { backends[backend].setApiKey(key); },
 };
 
 Object.keys(api).map((endpoint) => { endpointBackends[endpoint] = imdb; return imdb; });
